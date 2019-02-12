@@ -25,6 +25,14 @@ public class DataStore {
         Project project = projects.stream().filter(p -> p.getTitle().equals("Awesome")).findFirst().orElse(null);
         project.setUsers(this.getUsersList());
 
+        List<Project> subProjects = new ArrayList<Project>() {{
+            add(new Project("SilverMoon", "Simple console Java project"));
+            add(new Project("GoldWays", "Simple Java project with Hibernate"));
+            add(new Project("TheBees", "Setup Java project with Spring Boot"));
+        }};
+
+        project.setSubProjects(subProjects);
+
         return projects;
     }
 }

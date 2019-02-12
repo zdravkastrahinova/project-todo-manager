@@ -125,12 +125,11 @@ public class ProjectsRenderer {
         verifyProject(project);
 
         List<Project> subProjects = projectsRepo.getAllSubProjects(project.getId());
-        System.out.println("Sub-projects: " + subProjects.stream().count());
+        System.out.println("Main project reference: " + project.getTitle() + " Sub-projects: " + subProjects.stream().count());
         for (Project p : subProjects) {
             System.out.println(p.getTitle() + " - " + p.getDescription());
         }
 
-        System.out.println("Main project reference: " + project.getTitle());
     }
 
     public void renderSubProjectAddingMenu() {
