@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class Project extends BaseModel {
@@ -8,6 +9,24 @@ public class Project extends BaseModel {
     private List<User> users;
     private List<Task> tasks;
     private List<Project> subProjects;
+
+    public Project() {
+        super();
+
+        this.setUsers(new ArrayList<>());
+        this.setTasks(new ArrayList<>());
+        this.setSubProjects(new ArrayList<>());
+    }
+
+    public Project(String title, String description) {
+        super();
+
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setUsers(new ArrayList<>());
+        this.setTasks(new ArrayList<>());
+        this.setSubProjects(new ArrayList<>());
+    }
 
     public String getTitle() {
         return title;
