@@ -57,7 +57,7 @@ public class ProjectsRepository {
         return project.getSubProjects();
     }
 
-    public void addSubProjects(UUID projectId, Project subProject) {
+    public void addSubProject(UUID projectId, Project subProject) {
         Project project = this.getById(projectId);
 
         List<Project> subProjects = project.getSubProjects();
@@ -71,12 +71,16 @@ public class ProjectsRepository {
         project.setSubProjects(subProjects);
     }
 
-    public void removeSubProjects(UUID projectId, Project subProject) {
+    public void removeSubProject(UUID projectId, String subProjectTitle) {
         Project project = this.getById(projectId);
 
         List<Project> subProjects = project.getSubProjects();
-
         if (subProjects == null) {
+            return;
+        }
+
+        Project subProject = subProjects.stream().filter(sp -> sp.getTitle().equals(subProjectTitle)).findFirst().orElse(null);
+        if (subProject == null) {
             return;
         }
 
