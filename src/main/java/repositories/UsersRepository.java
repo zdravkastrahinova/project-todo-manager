@@ -1,8 +1,8 @@
 package repositories;
 
+import data.DataStore;
 import models.User;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -10,11 +10,7 @@ public class UsersRepository {
     private List<User> users;
 
     public UsersRepository() {
-        this.users = new ArrayList<User>() {{
-            add(new User("William Smith", "Manager"));
-            add(new User("Amy Adams", "Developer"));
-            add(new User("John Allan", "Developer"));
-        }};
+        this.users = new DataStore().getUsersList();
     }
 
     public List<User> getAll() {
