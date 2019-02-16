@@ -28,7 +28,7 @@ public class MenuRenderer {
         System.out.println("[0] Exit");
 
         sc = new Scanner(System.in);
-        int option = Integer.parseInt(sc.nextLine());
+        int option = parseConsoleInput(sc.nextLine());
 
         switch (option) {
             case 1:
@@ -46,6 +46,17 @@ public class MenuRenderer {
             case 0:
                 System.exit(0);
                 break;
+            default:
+                renderMainMenu();
+                break;
+        }
+    }
+
+    private int parseConsoleInput(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ex) {
+            return 0;
         }
     }
 }
