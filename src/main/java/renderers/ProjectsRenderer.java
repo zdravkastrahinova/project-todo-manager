@@ -6,28 +6,28 @@ import repositories.ProjectsRepository;
 import java.util.List;
 import java.util.Scanner;
 
-public class ProjectsRenderer {
+class ProjectsRenderer {
     private static Scanner sc;
     private ProjectsRepository projectsRepo;
 
-    public ProjectsRenderer(ProjectsRepository projectsRepo) {
+    ProjectsRenderer(ProjectsRepository projectsRepo) {
         this.projectsRepo = projectsRepo;
     }
 
-    public void renderProjectsMenu() {
+    void renderProjectsMenu() {
         System.out.println();
-        System.out.println("Choose operation");
-        System.out.println("[1] List Projects");
+        System.out.println("Choose project operation");
+        System.out.println("[1] List");
         System.out.println("[2] List SubProjects");
-        System.out.println("[3] Add Project");
+        System.out.println("[3] Add");
         System.out.println("[4] Add SubProject");
-        System.out.println("[5] Update Project");
-        System.out.println("[6] Delete Project");
+        System.out.println("[5] Update");
+        System.out.println("[6] Delete");
         System.out.println("[7] Delete SubProjects");
         System.out.println("[0] Exit");
 
         sc = new Scanner(System.in);
-        int option = Integer.parseInt(sc.nextLine());
+        int option = parseConsoleInput(sc.nextLine());
 
         switch (option) {
             case 1:
@@ -63,7 +63,7 @@ public class ProjectsRenderer {
         }
     }
 
-    public void renderProjectListingMenu() {
+    private void renderProjectListingMenu() {
         List<Project> projects = projectsRepo.getAll();
 
         for (Project p : projects) {
@@ -72,57 +72,88 @@ public class ProjectsRenderer {
         }
     }
 
-    public void renderProjectAddingMenu() {
-        System.out.println("Project Title:");
-        String title = sc.nextLine();
+    private void renderProjectAddingMenu() {
+        try {
+            System.out.println("Enter project data");
+            System.out.println("Title:");
+            String title = sc.nextLine();
 
-        System.out.println("Project Description:");
-        String description = sc.nextLine();
+            System.out.println("Description:");
+            String description = sc.nextLine();
 
-        Project project = new Project(title, description);
+            Project project = new Project(title, description);
 
-        projectsRepo.add(project);
-        System.out.println("Project was successfully added.");
+            if (projectsRepo.doesProjectExist(project)) {
+                System.out.println("Project with the same title already exists.");
+                this.renderProjectsMenu();
+            }
+
+            projectsRepo.add(project);
+
+            System.out.println("Project was successfully added.");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+            renderProjectsMenu();
+        }
     }
 
-    public void renderProjectUpdatingMenu() {
-        System.out.println("Enter title of the project you want to edit");
-        String title = sc.nextLine();
+    private void renderProjectUpdatingMenu() {
+        try {
+            System.out.println("Enter title of the project you want to edit:");
+            String title = sc.nextLine();
 
-        Project project = projectsRepo.getByTitle(title);
-        verifyProject(project);
+            this.validateUserInput(title);
 
-        System.out.println("Enter new values for selected project");
-        System.out.println("Project Title:");
-        String titleToUpdate = sc.nextLine();
+            Project project = projectsRepo.getByTitle(title);
+            this.verifyProjectExists(project);
 
-        System.out.println("Project Description: ");
-        String descriptionToUpdate = sc.nextLine();
+            System.out.println("Enter new values for selected project");
+            System.out.println("Title:");
+            String titleToUpdate = sc.nextLine();
 
-        project.setTitle(titleToUpdate);
-        project.setDescription(descriptionToUpdate);
+            System.out.println("Description:");
+            String descriptionToUpdate = sc.nextLine();
 
-        projectsRepo.update(project);
-        System.out.println("Project was successfully updated.");
+            project.setTitle(titleToUpdate);
+            project.setDescription(descriptionToUpdate);
+
+            projectsRepo.update(project);
+            System.out.println("Project was successfully updated.");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+            renderProjectsMenu();
+        }
     }
 
-    public void renderProjectDeletingMenu() {
-        System.out.println("Enter title of the project you want to delete.");
-        String title = sc.nextLine();
+    private void renderProjectDeletingMenu() {
+        try {
+            System.out.println("Enter title of the project you want to delete.");
+            String title = sc.nextLine();
 
-        Project project = projectsRepo.getByTitle(title);
-        verifyProject(project);
+            this.validateUserInput(title);
 
-        projectsRepo.delete(project);
-        System.out.println("Project was successfully deleted.");
+            Project project = projectsRepo.getByTitle(title);
+            this.verifyProjectExists(project);
+
+            projectsRepo.delete(project);
+            System.out.println("Project was successfully deleted.");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+            renderProjectsMenu();
+        }
     }
 
-    public void renderSubProjectListingMenu() {
+    private void renderSubProjectListingMenu() {
         System.out.println("Enter project title you want to list all sub-projects");
         String projectTitle = sc.nextLine();
 
+        this.validateUserInput(projectTitle);
+
         Project project = projectsRepo.getByTitle(projectTitle);
-        verifyProject(project);
+        this.verifyProjectExists(project);
 
         List<Project> subProjects = projectsRepo.getAllSubProjects(project.getId());
         System.out.println("Main project reference: " + project.getTitle() + " Sub-projects: " + subProjects.stream().count());
@@ -132,43 +163,76 @@ public class ProjectsRenderer {
 
     }
 
-    public void renderSubProjectAddingMenu() {
-        System.out.println("Enter project title you want to add sub-project");
-        String projectTitle = sc.nextLine();
+    private void renderSubProjectAddingMenu() {
+        try {
+            System.out.println("Enter project title you want to add sub-project");
+            String projectTitle = sc.nextLine();
 
-        Project project = projectsRepo.getByTitle(projectTitle);
-        verifyProject(project);
+            this.validateUserInput(projectTitle);
 
-        System.out.println("Sub-project Title:");
-        String title = sc.nextLine();
+            Project project = projectsRepo.getByTitle(projectTitle);
+            this.verifyProjectExists(project);
 
-        System.out.println("Sub-project Description:");
-        String description = sc.nextLine();
+            System.out.println("Sub-project Title:");
+            String title = sc.nextLine();
 
-        Project subProject = new Project(title, description);
+            System.out.println("Sub-project Description:");
+            String description = sc.nextLine();
 
-        projectsRepo.addSubProject(project.getId(), subProject);
-        System.out.println("Sub-project was successfully added.");
-    }
+            Project subProject = new Project(title, description);
 
-    public void renderSubProjectDeletingMenu() {
-        System.out.println("Enter project title you want to remove sub-project");
-        String projectTitle = sc.nextLine();
+            projectsRepo.addSubProject(project.getId(), subProject);
+            System.out.println("Sub-project was successfully added.");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
 
-        Project project = projectsRepo.getByTitle(projectTitle);
-        verifyProject(project);
-
-        System.out.println("Enter sub-project title you want to remove");
-        String subProjectTitle = sc.nextLine();
-
-        projectsRepo.removeSubProject(project.getId(), subProjectTitle);
-        System.out.println("Sub-project was successfully removed.");
-    }
-
-    public void verifyProject(Project project) {
-        if (project == null) {
-            System.out.println("Project with this title does not exist");
             renderProjectsMenu();
+        }
+    }
+
+    private void renderSubProjectDeletingMenu() {
+        try {
+            System.out.println("Enter project title you want to remove sub-project");
+            String projectTitle = sc.nextLine();
+
+            this.validateUserInput(projectTitle);
+
+            Project project = projectsRepo.getByTitle(projectTitle);
+            this.verifyProjectExists(project);
+
+            System.out.println("Enter sub-project title you want to remove");
+            String subProjectTitle = sc.nextLine();
+
+            this.validateUserInput(projectTitle);
+
+            projectsRepo.removeSubProject(project.getId(), subProjectTitle);
+            System.out.println("Sub-project was successfully removed.");
+        } catch (Exception ex) {
+            System.out.println(ex.getMessage());
+
+            renderProjectsMenu();
+        }
+    }
+
+    private void verifyProjectExists(Project project) {
+        if (!projectsRepo.doesProjectExist(project)) {
+            System.out.println("Project with this title does not exist.");
+            this.renderProjectsMenu();
+        }
+    }
+
+    private int parseConsoleInput(String value) {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException ex) {
+            return 0;
+        }
+    }
+
+    private void validateUserInput(String value) {
+        if (value == null || value.isEmpty()) {
+            System.out.println("Value cannot be an empty string.");
+            this.renderProjectsMenu();
         }
     }
 }

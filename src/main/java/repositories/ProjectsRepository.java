@@ -16,20 +16,31 @@ public class ProjectsRepository {
     }
 
     public Project getById(UUID id) {
-        return DataStore.getProjects().stream().filter(project -> project.getId() == id).findFirst().orElse(null);
+        return DataStore.getProjects()
+                .stream()
+                .filter(project -> project.getId() == id)
+                .findFirst()
+                .orElse(null);
     }
 
     public Project getByTitle(String title) {
-        return DataStore.getProjects().stream().filter(p -> p.getTitle().equals(title)).findFirst().orElse(null);
+        return DataStore.getProjects()
+                .stream()
+                .filter(p -> p.getTitle().toLowerCase().equals(title.trim().toLowerCase()))
+                .findFirst()
+                .orElse(null);
     }
 
-    public void add(Project project) {
-        DataStore.getProjects().add(project);
+    public void add(Project project) throws Exception {
+        verifyProjectData(project);
+
+        DataStore.addProjects(project);
     }
 
-    public void update(Project project) {
+    public void update(Project project) throws Exception {
+        verifyProjectData(project);
+
         Project p = this.getById(project.getId());
-
         if (p == null) {
             return;
         }
@@ -41,24 +52,26 @@ public class ProjectsRepository {
         p.setSubProjects(project.getSubProjects());
     }
 
-    public void delete(Project project) {
+    public void delete(Project project) throws Exception {
+        verifyProjectData(project);
+
         DataStore.getProjects().remove(project);
     }
 
     public List<Project> getAllSubProjects(UUID projectId) {
         Project project = this.getById(projectId);
-
         if (project == null)
             return null;
 
         return project.getSubProjects();
     }
 
-    public void addSubProject(UUID projectId, Project subProject) {
+    public void addSubProject(UUID projectId, Project subProject) throws Exception {
+        verifyProjectData(subProject);
+
         Project project = this.getById(projectId);
 
         List<Project> subProjects = project.getSubProjects();
-
         if (subProjects == null) {
             subProjects = new ArrayList<>();
         }
@@ -76,7 +89,12 @@ public class ProjectsRepository {
             return;
         }
 
-        Project subProject = subProjects.stream().filter(sp -> sp.getTitle().equals(subProjectTitle)).findFirst().orElse(null);
+        Project subProject = subProjects
+                .stream()
+                .filter(sp -> sp.getTitle().toLowerCase().equals(subProjectTitle.trim().toLowerCase()))
+                .findFirst()
+                .orElse(null);
+
         if (subProject == null) {
             return;
         }
@@ -84,5 +102,33 @@ public class ProjectsRepository {
         subProjects.remove(subProject);
 
         project.setSubProjects(subProjects);
+    }
+
+    public boolean doesProjectExist(Project project) {
+        if (project == null) {
+            return false;
+        }
+
+        Project p = DataStore.getProjects()
+                .stream()
+                .filter(pr -> pr.getTitle().toLowerCase().equals(project.getTitle().trim().toLowerCase()))
+                .findFirst()
+                .orElse(null);
+
+        return p != null;
+    }
+
+    private void verifyProjectData(Project project) throws Exception {
+        if (project == null) {
+            throw new NullPointerException("Project is not defined. You should pass a valid object instance.");
+        }
+
+        if (project.getTitle().trim().isEmpty()) {
+            throw new Exception("Project title cannot be an empty string.");
+        }
+
+        if (project.getDescription().trim().isEmpty()) {
+            throw new Exception("Project description cannot be an empty string.");
+        }
     }
 }

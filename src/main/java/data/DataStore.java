@@ -27,6 +27,10 @@ public final class DataStore {
         return DataStore.projects;
     }
 
+    public static void addProjects(Project project) {
+        DataStore.projects.add(project);
+    }
+
     public static List<Task> getTasks() {
         return DataStore.tasks;
     }
