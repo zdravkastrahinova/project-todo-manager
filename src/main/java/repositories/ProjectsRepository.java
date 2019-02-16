@@ -8,26 +8,23 @@ import java.util.List;
 import java.util.UUID;
 
 public class ProjectsRepository {
-    private List<Project> projects;
-
     public ProjectsRepository() {
-        this.projects = new DataStore().getProjectsList();
     }
 
     public List<Project> getAll() {
-        return this.projects;
+        return DataStore.getProjects();
     }
 
     public Project getById(UUID id) {
-        return this.projects.stream().filter(project -> project.getId() == id).findFirst().orElse(null);
+        return DataStore.getProjects().stream().filter(project -> project.getId() == id).findFirst().orElse(null);
     }
 
     public Project getByTitle(String title) {
-        return this.projects.stream().filter(p -> p.getTitle().equals(title)).findFirst().orElse(null);
+        return DataStore.getProjects().stream().filter(p -> p.getTitle().equals(title)).findFirst().orElse(null);
     }
 
     public void add(Project project) {
-        this.projects.add(project);
+        DataStore.getProjects().add(project);
     }
 
     public void update(Project project) {
@@ -45,7 +42,7 @@ public class ProjectsRepository {
     }
 
     public void delete(Project project) {
-        this.projects.remove(project);
+        DataStore.getProjects().remove(project);
     }
 
     public List<Project> getAllSubProjects(UUID projectId) {

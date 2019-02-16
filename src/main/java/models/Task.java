@@ -1,5 +1,6 @@
 package models;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
@@ -7,10 +8,23 @@ public class Task extends BaseModel {
     private String title;
     private String description;
     private UUID assigneeId;
-    private UUID creatorId;
     private UUID statusId;
     private UUID projectId;
     private List<Task> subTasks;
+
+    public Task() {
+        super();
+
+        this.setSubTasks(new ArrayList<>());
+    }
+
+    public Task(String title, String description) {
+        super();
+
+        this.setTitle(title);
+        this.setDescription(description);
+        this.setSubTasks(new ArrayList<>());
+    }
 
     public String getTitle() {
         return title;
@@ -34,14 +48,6 @@ public class Task extends BaseModel {
 
     public void setAssigneeId(UUID assigneeId) {
         this.assigneeId = assigneeId;
-    }
-
-    public UUID getCreatorId() {
-        return creatorId;
-    }
-
-    public void setCreatorId(UUID creatorId) {
-        this.creatorId = creatorId;
     }
 
     public UUID getStatusId() {

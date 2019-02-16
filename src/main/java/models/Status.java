@@ -4,6 +4,17 @@ public class Status extends BaseModel {
     private String name;
     private String description;
 
+    public Status() {
+        super();
+    }
+
+    public Status(String name, String description) {
+        super();
+
+        this.setName(name);
+        this.setDescription(description);
+    }
+
     public String getName() {
         return name;
     }
