@@ -10,13 +10,17 @@ import java.util.Arrays;
 import java.util.List;
 
 public final class DataStore {
-    private static List<User> users = null;
-    private static List<Project> projects = null;
-    private static List<Task> tasks = null;
-    private static List<Status> statuses = null;
+    private static ArrayList<User> users = null;
+    private static ArrayList<Project> projects = null;
+    private static ArrayList<Task> tasks = null;
+    private static ArrayList<Status> statuses = null;
 
     public static List<User> getUsers() {
         return DataStore.users;
+    }
+
+    public static void addUsers(User user) {
+        DataStore.users.add(user);
     }
 
     public static List<Project> getProjects() {
@@ -38,15 +42,15 @@ public final class DataStore {
         tasks = getTasksList();
     }
 
-    private static List<User> getUsersList() {
-        return Arrays.asList(
+    private static ArrayList<User> getUsersList() {
+        return new ArrayList<> (Arrays.asList(
                 new User("William Smith", "Manager"),
                 new User("Amy Adams", "Developer"),
-                new User("John Allan", "Developer"));
+                new User("John Allan", "Developer")));
     }
 
-    private static List<Project> getProjectsList() {
-        List<Project> projects = new ArrayList<Project>() {{
+    private static ArrayList<Project> getProjectsList() {
+        ArrayList<Project> projects = new ArrayList<Project>() {{
             add(new Project("Awesome", "Simple console Java project"));
             add(new Project("Summit", "Simple Java project with Hibernate"));
             add(new Project("Spring", "Setup Java project with Spring Boot"));
@@ -65,8 +69,8 @@ public final class DataStore {
         return projects;
     }
 
-    private static List<Task> getTasksList() {
-        List<Task> tasks = new ArrayList<>();
+    private static ArrayList<Task> getTasksList() {
+        ArrayList<Task> tasks = new ArrayList<>();
 
         Task javaTask = new Task("Java Path", "Getting familiar with Java");
         javaTask.setProjectId(DataStore.projects.get(0).getId());
@@ -94,12 +98,11 @@ public final class DataStore {
         return tasks;
     }
 
-    private static List<Status> getStatusesList() {
-        return Arrays.asList(
+    private static ArrayList<Status> getStatusesList() {
+        return new ArrayList<> (Arrays.asList(
                 new Status("To Do", "Not started"),
                 new Status("In Progress", "In development"),
-                new Status("Done", "Completed")
-        );
+                new Status("Done", "Completed")));
     }
 
     private static void configureTask(Task subTask) {
