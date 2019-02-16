@@ -83,14 +83,10 @@ public final class DataStore {
         tasks.add(javaSpringTask);
 
         Task subTask = new Task("Java DAL and Service layers", "Getting familiar with Java layers architecture");
-        subTask.setProjectId(DataStore.projects.get(1).getId());
-        subTask.setAssigneeId(DataStore.users.get(1).getId());
-        subTask.setStatusId(DataStore.getStatuses().get(0).getId());
+        configureTask(subTask);
 
         Task architectureTask = new Task("Java Architecture", "Getting familiar with Java architecture");
-        architectureTask.setProjectId(DataStore.projects.get(1).getId());
-        architectureTask.setAssigneeId(DataStore.users.get(1).getId());
-        architectureTask.setStatusId(DataStore.getStatuses().get(0).getId());
+        configureTask(architectureTask);
         architectureTask.setSubTasks(Arrays.asList(subTask));
 
         tasks.add(architectureTask);
@@ -104,5 +100,11 @@ public final class DataStore {
                 new Status("In Progress", "In development"),
                 new Status("Done", "Completed")
         );
+    }
+
+    private static void configureTask(Task subTask) {
+        subTask.setProjectId(DataStore.projects.get(1).getId());
+        subTask.setAssigneeId(DataStore.users.get(1).getId());
+        subTask.setStatusId(DataStore.getStatuses().get(0).getId());
     }
 }
