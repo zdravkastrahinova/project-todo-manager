@@ -32,13 +32,13 @@ public class ProjectsRepository {
     }
 
     public void add(Project project) throws Exception {
-        verifyProjectData(project);
+        this.verifyProjectData(project);
 
         DataStore.addProjects(project);
     }
 
     public void update(Project project) throws Exception {
-        verifyProjectData(project);
+        this.verifyProjectData(project);
 
         Project p = this.getById(project.getId());
         if (p == null) {
@@ -53,7 +53,7 @@ public class ProjectsRepository {
     }
 
     public void delete(Project project) throws Exception {
-        verifyProjectData(project);
+        this.verifyProjectData(project);
 
         DataStore.getProjects().remove(project);
     }
@@ -67,7 +67,7 @@ public class ProjectsRepository {
     }
 
     public void addSubProject(UUID projectId, Project subProject) throws Exception {
-        verifyProjectData(subProject);
+        this.verifyProjectData(subProject);
 
         Project project = this.getById(projectId);
 
