@@ -40,7 +40,6 @@ public class UsersRepository {
         verifyUserData(user);
 
         User u = this.getById(user.getId());
-
         if (u == null) {
             return;
         }
@@ -65,7 +64,7 @@ public class UsersRepository {
         return u != null;
     }
 
-    public void verifyUserData(User user) throws Exception {
+    private void verifyUserData(User user) throws Exception {
         if (user == null) {
             throw new NullPointerException("User is not defined. You should pass a valid object instance.");
         }
