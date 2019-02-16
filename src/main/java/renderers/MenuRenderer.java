@@ -7,8 +7,6 @@ import repositories.UsersRepository;
 import java.util.Scanner;
 
 public class MenuRenderer {
-    private static Scanner sc;
-
     private UsersRepository usersRepo;
     private ProjectsRepository projectsRepo;
     private TasksRepository tasksRepo;
@@ -27,7 +25,7 @@ public class MenuRenderer {
         System.out.println("[3] Tasks");
         System.out.println("[0] Exit");
 
-        sc = new Scanner(System.in);
+        Scanner sc = new Scanner(System.in);
         int option = parseConsoleInput(sc.nextLine());
 
         switch (option) {
