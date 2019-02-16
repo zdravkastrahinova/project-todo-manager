@@ -35,6 +35,10 @@ public final class DataStore {
         return DataStore.tasks;
     }
 
+    public static void addTasks(Task task) {
+        DataStore.tasks.add(task);
+    }
+
     public static List<Status> getStatuses() {
         return DataStore.statuses;
     }
