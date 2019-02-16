@@ -54,7 +54,7 @@ public class MenuRenderer {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
-            return 0;
+            return 4;
         }
     }
 }

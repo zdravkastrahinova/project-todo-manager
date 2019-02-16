@@ -60,6 +60,9 @@ class ProjectsRenderer {
             case 0:
                 System.exit(0);
                 break;
+            default:
+                this.renderProjectsMenu();
+                break;
         }
     }
 
@@ -225,7 +228,7 @@ class ProjectsRenderer {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
-            return 0;
+            return 8;
         }
     }
 

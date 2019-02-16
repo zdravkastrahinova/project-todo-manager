@@ -145,7 +145,7 @@ class UsersRenderer {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
-            return 0;
+            return 5;
         }
     }
 

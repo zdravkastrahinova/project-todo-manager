@@ -66,6 +66,9 @@ class TasksRenderer {
             case 0:
                 System.exit(0);
                 break;
+            default:
+                this.renderTasksMenu();
+                break;
         }
     }
 
@@ -243,7 +246,7 @@ class TasksRenderer {
         try {
             return Integer.parseInt(value);
         } catch (NumberFormatException ex) {
-            return 0;
+            return 8;
         }
     }
 
@@ -276,9 +279,12 @@ class TasksRenderer {
         this.validateUserInput(username);
 
         User user = usersRepo.getByName(username);
-        if (user != null) {
-            subTask.setAssigneeId(user.getId());
+        if (!usersRepo.doesUserExist(user)) {
+            System.out.println("USer with provided name does not exist.");
+            this.renderTasksMenu();
         }
+
+        subTask.setAssigneeId(user.getId());
 
         this.updateTaskStatus(subTask);
     }

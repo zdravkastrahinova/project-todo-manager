@@ -55,6 +55,10 @@ public class UsersRepository {
     }
 
     public boolean doesUserExist(User user) {
+        if (user == null) {
+            return false;
+        }
+
         User u = DataStore.getUsers()
                 .stream()
                 .filter(us -> us.getName().toLowerCase().equals(user.getName().trim().toLowerCase()))
