@@ -37,7 +37,7 @@ public class UsersRepositoryTest {
 
     @Test
     public void getByIdWithValidUuidReturnsUser() {
-        UUID id = this.usersRepo.getAll().get(0).getId();
+        UUID id = DataStore.getUsers().get(0).getId();
 
         Assert.assertNotNull("With valid UUID returns user that is not null", this.usersRepo.getById(id));
     }
@@ -49,7 +49,7 @@ public class UsersRepositoryTest {
 
     @Test
     public void getByNameWithValidNameReturnsUser() {
-        String name = this.usersRepo.getAll().get(0).getName();
+        String name = DataStore.getUsers().get(0).getName();
 
         Assert.assertNotNull("With valid name returns user that is not null", this.usersRepo.getByName(name));
     }
@@ -111,6 +111,89 @@ public class UsersRepositoryTest {
             when(userMock.getRole()).thenReturn("");
 
             this.usersRepo.add(userMock);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User role cannot be an empty string.", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void updateWithExistingUuidValidDataUpdatesUser() {
+        UUID id = DataStore.getUsers().get(0).getId();
+
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getId()).thenReturn(id);
+        when(userMock.getName()).thenReturn("Updated user name");
+        when(userMock.getRole()).thenReturn("Updated user role");
+
+        try {
+           usersRepo.update(userMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        User user = this.usersRepo.getById(id);
+        Assert.assertEquals(userMock.getName(), user.getName());
+        Assert.assertEquals(userMock.getRole(), user.getRole());
+    }
+
+    @Test
+    public void updateWithNonExistingUuidValidDataReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getId()).thenReturn(id);
+        when(userMock.getName()).thenReturn("Updated user name");
+        when(userMock.getRole()).thenReturn("Updated user role");
+
+        try {
+            usersRepo.update(userMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        User user = this.usersRepo.getAll()
+                .stream()
+                .filter(u -> u.getRole().equals(userMock.getName()))
+                .findFirst()
+                .orElse(null);
+
+        Assert.assertNull(user);
+    }
+
+    @Test
+    public void updateWhenUserIsNullThrowsNullPointerException() {
+        try {
+            this.usersRepo.update(null);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User is not defined. You should pass a valid object instance.", ex.getMessage());
+            assertTrue(ex instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void updateWhenUserNameIsEmptyThrowsException() {
+        try {
+            User userMock = Mockito.mock(User.class);
+            when(userMock.getName()).thenReturn("");
+            when(userMock.getRole()).thenReturn("Updated user role");
+
+            this.usersRepo.update(userMock);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User name cannot be an empty string.", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void updateWhenUserRoleIsEmptyThrowsException() {
+        try {
+            User userMock = Mockito.mock(User.class);
+            when(userMock.getName()).thenReturn("Updated user name");
+            when(userMock.getRole()).thenReturn("");
+
+            this.usersRepo.update(userMock);
             fail();
         } catch (Exception ex) {
             assertEquals("User role cannot be an empty string.", ex.getMessage());
