@@ -53,7 +53,6 @@ public class ProjectsRepositoryTest {
         String title = this.projectRepo.getAll().get(0).getTitle();
 
         Assert.assertNotNull("With valid title returns project that is not null", this.projectRepo.getByTitle(title));
-        Assert.assertNull("With incorrect UUID should return null", this.projectRepo.getByTitle("test-title"));
     }
 
     @Test
