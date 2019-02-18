@@ -56,7 +56,7 @@ public class ProjectsRepositoryTest {
     }
 
     @Test
-    public void getByTitleWithInvalidTitleReturnsProject() {
+    public void getByTitleWithInvalidTitleReturnsNull() {
         Assert.assertNull("With invalid title returns null", this.projectRepo.getByTitle("test-title"));
     }
 
