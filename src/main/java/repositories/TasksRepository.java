@@ -61,7 +61,13 @@ public class TasksRepository {
     public void delete(Task task) throws Exception {
         this.verifyTaskData(task);
 
-        DataStore.getTasks().remove(task);
+        Task item = DataStore.getTasks()
+                .stream()
+                .filter(u -> u.getId() == task.getId())
+                .findFirst()
+                .orElse(null);
+
+        DataStore.getTasks().remove(item);
     }
 
     public List<Task> getAllSubTasks(UUID taskId) {

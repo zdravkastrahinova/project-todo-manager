@@ -121,4 +121,90 @@ public class TasksRepositoryTest {
             assertTrue(true);
         }
     }
+
+    @Test
+    public void updateWithExistingUuidValidDataUpdatesTask() {
+        UUID id = DataStore.getTasks().get(0).getId();
+
+        Task taskMock = Mockito.mock(Task.class);
+        when(taskMock.getId()).thenReturn(id);
+        when(taskMock.getTitle()).thenReturn("Updated task title");
+        when(taskMock.getDescription()).thenReturn("Updated task description");
+
+        try {
+            this.tasksRepo.update(taskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Task task = this.tasksRepo.getById(id);
+        Assert.assertEquals(taskMock.getTitle(), task.getTitle());
+        Assert.assertEquals(taskMock.getDescription(), task.getDescription());
+    }
+
+    @Test
+    public void updateWithNonExistingUuidAndValidDataReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        Task taskMock = Mockito.mock(Task.class);
+        when(taskMock.getId()).thenReturn(id);
+        when(taskMock.getTitle()).thenReturn("Updated task title");
+        when(taskMock.getDescription()).thenReturn("Updated task description");
+
+        try {
+            this.tasksRepo.update(taskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Task task = this.tasksRepo.getAll()
+                .stream()
+                .filter(u -> u.getTitle().equals(taskMock.getTitle()))
+                .findFirst()
+                .orElse(null);
+
+        Assert.assertNull(task);
+    }
+
+    @Test
+    public void deleteWithValidDataRemovesTask() {
+        Assert.assertEquals("Initially, the tasks count should be 3", 3, this.tasksRepo.getAll().size());
+
+        Task t = DataStore.getTasks().get(0);
+
+        Task taskMock = Mockito.mock(Task.class);
+        when(taskMock.getId()).thenReturn(t.getId());
+        when(taskMock.getTitle()).thenReturn(t.getTitle());
+        when(taskMock.getDescription()).thenReturn(t.getDescription());
+
+        try {
+            this.tasksRepo.delete(taskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertEquals("Finally, the tasks count should be 2", 2, this.tasksRepo.getAll().size());
+        Assert.assertNull("With valid UUID returns null after task has been removed", this.tasksRepo.getById(taskMock.getId()));
+    }
+
+    @Test
+    public void doesTaskExistWhenTaskIsNullReturnsFalse() {
+        Assert.assertFalse("Task does not exist because it is null", this.tasksRepo.doesTaskExist(null));
+    }
+
+    @Test
+    public void doesTaskExistWithExistingTaskNameReturnsTrue() {
+        Task taskMock = Mockito.mock(Task.class);
+        when(taskMock.getTitle()).thenReturn(DataStore.getTasks().get(0).getTitle());
+
+        Assert.assertTrue("Task exists because title belongs to task", this.tasksRepo.doesTaskExist(taskMock));
+    }
+
+    @Test
+    public void doesTaskExistWithNonExistingTaskNameReturnsFalse() {
+        Task taskMock = Mockito.mock(Task.class);
+        when(taskMock.getTitle()).thenReturn("Non-existing task title");
+
+        Assert.assertFalse("Task does not exist because title is does not belong to any task", this.tasksRepo.doesTaskExist(taskMock));
+    }
 }
