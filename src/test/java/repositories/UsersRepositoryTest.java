@@ -259,4 +259,25 @@ public class UsersRepositoryTest {
             assertEquals("User role cannot be an empty string.", ex.getMessage());
         }
     }
+
+    @Test
+    public void doesUserExistWhenUserIsNullReturnsFalse() {
+        Assert.assertFalse("User does not exist because it is null", this.usersRepo.doesUserExist(null));
+    }
+
+    @Test
+    public void doesUserExistWithExistingUserNameReturnsTrue() {
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn(DataStore.getUsers().get(0).getName());
+
+        Assert.assertTrue("User exists because name belongs to user", this.usersRepo.doesUserExist(userMock));
+    }
+
+    @Test
+    public void doesUserExistWithNonExistingUserNameReturnsFalse() {
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("Non-existing user name");
+
+        Assert.assertFalse("User does not exist because name is does not belong to any user", this.usersRepo.doesUserExist(userMock));
+    }
 }
