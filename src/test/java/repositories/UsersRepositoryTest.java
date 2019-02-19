@@ -91,11 +91,11 @@ public class UsersRepositoryTest {
 
     @Test
     public void addWhenUserNameIsEmptyThrowsException() {
-        try {
-            User userMock = Mockito.mock(User.class);
-            when(userMock.getName()).thenReturn("");
-            when(userMock.getRole()).thenReturn("Mock user role");
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("");
+        when(userMock.getRole()).thenReturn("Mock user role");
 
+        try {
             this.usersRepo.add(userMock);
             fail();
         } catch (Exception ex) {
@@ -105,11 +105,11 @@ public class UsersRepositoryTest {
 
     @Test
     public void addWhenUserRoleIsEmptyThrowsException() {
-        try {
-            User userMock = Mockito.mock(User.class);
-            when(userMock.getName()).thenReturn("Mock user name");
-            when(userMock.getRole()).thenReturn("");
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("Mock user name");
+        when(userMock.getRole()).thenReturn("");
 
+        try {
             this.usersRepo.add(userMock);
             fail();
         } catch (Exception ex) {
@@ -127,7 +127,7 @@ public class UsersRepositoryTest {
         when(userMock.getRole()).thenReturn("Updated user role");
 
         try {
-           usersRepo.update(userMock);
+            usersRepo.update(userMock);
         } catch (Exception ex) {
             ex.printStackTrace();
         }
@@ -174,11 +174,11 @@ public class UsersRepositoryTest {
 
     @Test
     public void updateWhenUserNameIsEmptyThrowsException() {
-        try {
-            User userMock = Mockito.mock(User.class);
-            when(userMock.getName()).thenReturn("");
-            when(userMock.getRole()).thenReturn("Updated user role");
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("");
+        when(userMock.getRole()).thenReturn("Updated user role");
 
+        try {
             this.usersRepo.update(userMock);
             fail();
         } catch (Exception ex) {
@@ -188,12 +188,72 @@ public class UsersRepositoryTest {
 
     @Test
     public void updateWhenUserRoleIsEmptyThrowsException() {
-        try {
-            User userMock = Mockito.mock(User.class);
-            when(userMock.getName()).thenReturn("Updated user name");
-            when(userMock.getRole()).thenReturn("");
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("Updated user name");
+        when(userMock.getRole()).thenReturn("");
 
+        try {
             this.usersRepo.update(userMock);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User role cannot be an empty string.", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void deleteWithValidDataRemovesUser() {
+        Assert.assertEquals("Initially, the users count should be 3", 3, this.usersRepo.getAll().size());
+
+        User u = DataStore.getUsers().get(0);
+
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getId()).thenReturn(u.getId());
+        when(userMock.getName()).thenReturn(u.getName());
+        when(userMock.getRole()).thenReturn(u.getRole());
+
+        try {
+            usersRepo.delete(userMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertEquals("Finally, the users count should be 2", 2, this.usersRepo.getAll().size());
+        Assert.assertNull("With valid UUID returns null after user has been removed", this.usersRepo.getById(userMock.getId()));
+    }
+
+    @Test
+    public void deleteWhenUserIsNullThrowsNullPointerException() {
+        try {
+            this.usersRepo.delete(null);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User is not defined. You should pass a valid object instance.", ex.getMessage());
+            assertTrue(ex instanceof NullPointerException);
+        }
+    }
+
+    @Test
+    public void deleteWhenUserNameIsEmptyThrowsException() {
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("");
+        when(userMock.getRole()).thenReturn("Updated user role");
+
+        try {
+            this.usersRepo.delete(userMock);
+            fail();
+        } catch (Exception ex) {
+            assertEquals("User name cannot be an empty string.", ex.getMessage());
+        }
+    }
+
+    @Test
+    public void deleteWhenUserRoleIsEmptyThrowsException() {
+        User userMock = Mockito.mock(User.class);
+        when(userMock.getName()).thenReturn("Updated user name");
+        when(userMock.getRole()).thenReturn("");
+
+        try {
+            this.usersRepo.delete(userMock);
             fail();
         } catch (Exception ex) {
             assertEquals("User role cannot be an empty string.", ex.getMessage());

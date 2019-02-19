@@ -51,7 +51,13 @@ public class UsersRepository {
     public void delete(User user) throws Exception {
         verifyUserData(user);
 
-        DataStore.getUsers().remove(user);
+        User item = DataStore.getUsers()
+                .stream()
+                .filter(u -> u.getId() == user.getId())
+                .findFirst()
+                .orElse(null);
+
+        DataStore.getUsers().remove(item);
     }
 
     public boolean doesUserExist(User user) {
