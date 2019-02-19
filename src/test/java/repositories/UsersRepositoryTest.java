@@ -138,7 +138,7 @@ public class UsersRepositoryTest {
     }
 
     @Test
-    public void updateWithNonExistingUuidValidDataReturnsWithoutAnyChanges() {
+    public void updateWithNonExistingUuidAndValidDataReturnsWithoutAnyChanges() {
         UUID id = UUID.randomUUID();
 
         User userMock = Mockito.mock(User.class);
@@ -154,7 +154,7 @@ public class UsersRepositoryTest {
 
         User user = this.usersRepo.getAll()
                 .stream()
-                .filter(u -> u.getRole().equals(userMock.getName()))
+                .filter(u -> u.getName().equals(userMock.getName()))
                 .findFirst()
                 .orElse(null);
 
