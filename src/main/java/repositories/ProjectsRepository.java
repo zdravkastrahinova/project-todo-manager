@@ -55,7 +55,13 @@ public class ProjectsRepository {
     public void delete(Project project) throws Exception {
         this.verifyProjectData(project);
 
-        DataStore.getProjects().remove(project);
+        Project item = DataStore.getProjects()
+                .stream()
+                .filter(u -> u.getId() == project.getId())
+                .findFirst()
+                .orElse(null);
+
+        DataStore.getProjects().remove(item);
     }
 
     public List<Project> getAllSubProjects(UUID projectId) {
