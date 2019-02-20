@@ -209,14 +209,116 @@ public class ProjectsRepositoryTest {
     }
 
     @Test
-    public void getAllSubProjects() {
+    public void getAllSubProjectsWithExistingProjectIdReturnsSubProjects() {
+        List<Project> subProjects = this.projectsRepo.getAllSubProjects(DataStore.getProjects().get(0).getId());
+
+        Assert.assertNotNull("Sub-project list with existing parent project UUID is not null", subProjects);
+        Assert.assertEquals("Sub-project list count with existing parent project UUID is 3", 3, subProjects.size());
     }
 
     @Test
-    public void addSubProject() {
+    public void getAllSubProjectsWithNonExistingProjectIdReturnsNull() {
+        Assert.assertNull("Sub-projects list is null when parent project UUID belongs to non-existing project", this.projectsRepo.getAllSubProjects(UUID.randomUUID()));
     }
 
     @Test
-    public void removeSubProject() {
+    public void addSubProjectWithExistingProjectIdAndValidDataAddsSubProject() {
+        Project project = DataStore.getProjects().get(0);
+        Assert.assertEquals("Initially, project has defined 3 sub-projects", 3, project.getSubProjects().size());
+
+        Project subProjectMock = Mockito.mock(Project.class);
+        when(subProjectMock.getTitle()).thenReturn("Sub-project title");
+        when(subProjectMock.getDescription()).thenReturn("Sub-project description");
+
+        try {
+            this.projectsRepo.addSubProject(project.getId(), subProjectMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertEquals("Finally, project has defined 4 sub-projects", 4, project.getSubProjects().size());
+    }
+
+    @Test
+    public void addSubProjectWithNonExistingProjectIdAndValidDataReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        Project subProjectMock = Mockito.mock(Project.class);
+        when(subProjectMock.getTitle()).thenReturn("Sub-project title");
+        when(subProjectMock.getDescription()).thenReturn("Sub-project description");
+
+        try {
+            this.projectsRepo.addSubProject(id, subProjectMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertNull("Project is null because UUID does not belong to existing project", this.projectsRepo.getById(id));
+    }
+
+    @Test
+    public void addSubProjectWithExistingProjectIdAndSubProjectsAreNullInitializesSubProjects() {
+        Project project = DataStore.getProjects().get(2);
+        project.setSubProjects(null);
+
+        Assert.assertNull("Initially, sub-projects list is null", project.getSubProjects());
+
+        Project subProjectMock = Mockito.mock(Project.class);
+        when(subProjectMock.getTitle()).thenReturn("Sub-project title");
+        when(subProjectMock.getDescription()).thenReturn("Sub-project description");
+
+        try {
+            this.projectsRepo.addSubProject(project.getId(), subProjectMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertNotNull("Finally, sub-projects list is not null", project.getSubProjects());
+    }
+
+    @Test
+    public void removeSubProjectWithNonExistingProjectIdAndExistingSubProjectTitleReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        this.projectsRepo.removeSubProject(id, "Sub-project title");
+
+        Assert.assertNull("Method returns because project is null", this.projectsRepo.getById(id));
+    }
+
+    @Test
+    public void removeSubProjectWithExistingProjectIdAndSubProjectsAreNullReturnsWithoutAnyChanges() {
+        Project project = DataStore.getProjects().get(2);
+        project.setSubProjects(null);
+
+        Assert.assertNull("Initially, sub-projects list is null", project.getSubProjects());
+
+        this.projectsRepo.removeSubProject(project.getId(), "Sub-project title");
+
+        Assert.assertNull("Finally, sub-projects list is null", project.getSubProjects());
+    }
+
+    @Test
+    public void removeSubProjectWithExistingProjectIdAndNonExistingTitleReturnsWithoutChanges() {
+        Project project = DataStore.getProjects().get(0);
+        Assert.assertNotNull("Initially, project has defined sub-projects", project.getSubProjects());
+        Assert.assertEquals("Initially, project has list with 3 sub-projects", 3, project.getSubProjects().size());
+
+        this.projectsRepo.removeSubProject(project.getId(), "Non-existing title");
+
+        Assert.assertNotNull("Finally, project has defined sub-projects", project.getSubProjects());
+        Assert.assertEquals("Finally, project has list with 3 sub-projects", 3, project.getSubProjects().size());
+    }
+
+    @Test
+    public void removeSubProjectWithExistingProjectIdAndExistingTitleRemovesSubProject() {
+        Project project = DataStore.getProjects().get(0);
+        Assert.assertNotNull("Initially, project has defined sub-projects", project.getSubProjects());
+        Assert.assertEquals("Initially, project has list with 3 sub-projects", 3, project.getSubProjects().size());
+
+        String subProjectTitle = "SilverMoon";
+        this.projectsRepo.removeSubProject(project.getId(), subProjectTitle);
+
+        Assert.assertEquals("Finally, project has list with 2 sub-projects", 2, project.getSubProjects().size());
+        Assert.assertNull("Finally, existing title returns null after sub-project has been removed", this.projectsRepo.getByTitle(subProjectTitle));
     }
 }

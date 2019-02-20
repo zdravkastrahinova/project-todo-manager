@@ -76,6 +76,9 @@ public class ProjectsRepository {
         this.verifyProjectData(subProject);
 
         Project project = this.getById(projectId);
+        if (project == null) {
+            return;
+        }
 
         List<Project> subProjects = project.getSubProjects();
         if (subProjects == null) {
@@ -89,6 +92,9 @@ public class ProjectsRepository {
 
     public void removeSubProject(UUID projectId, String subProjectTitle) {
         Project project = this.getById(projectId);
+        if (project == null) {
+            return;
+        }
 
         List<Project> subProjects = project.getSubProjects();
         if (subProjects == null) {
