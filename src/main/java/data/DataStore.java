@@ -9,40 +9,67 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+/**
+ * DataStore class generates in-memory data for application
+ */
 public final class DataStore {
     private static ArrayList<User> users = null;
     private static ArrayList<Project> projects = null;
     private static ArrayList<Task> tasks = null;
     private static ArrayList<Status> statuses = null;
 
+    /**
+     * @return list of users
+     */
     public static List<User> getUsers() {
         return DataStore.users;
     }
 
+    /**
+     * @param user to add user to collection
+     */
     public static void addUsers(User user) {
         DataStore.users.add(user);
     }
 
+    /**
+     * @return list of projects
+     */
     public static List<Project> getProjects() {
         return DataStore.projects;
     }
 
+    /**
+     * @param project to add project to collection
+     */
     public static void addProjects(Project project) {
         DataStore.projects.add(project);
     }
 
+    /**
+     * @return list of tasks
+     */
     public static List<Task> getTasks() {
         return DataStore.tasks;
     }
 
+    /**
+     * @param task to add task to collection
+     */
     public static void addTasks(Task task) {
         DataStore.tasks.add(task);
     }
 
+    /**
+     * @return list of statuses
+     */
     public static List<Status> getStatuses() {
         return DataStore.statuses;
     }
 
+    /**
+     * Generates data and populates collections
+     */
     public static void generateData() {
         users = getUsersList();
         projects = getProjectsList();
