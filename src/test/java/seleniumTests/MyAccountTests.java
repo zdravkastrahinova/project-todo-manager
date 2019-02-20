@@ -25,7 +25,7 @@ public class MyAccountTests {
 
     @Test
     public void testLoginFormWithEmptyFieldsReturnsErrorForUsername() {
-        WebElement loginButtonElement = driver.findElement(By.className("woocommerce-Button"));
+        WebElement loginButtonElement = driver.findElement(By.name("login"));
         loginButtonElement.click();
 
         WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
@@ -39,7 +39,7 @@ public class MyAccountTests {
         WebElement usernameInputElement = driver.findElement(By.id("username"));
         usernameInputElement.sendKeys("test");
 
-        WebElement loginButtonElement = driver.findElement(By.className("woocommerce-Button"));
+        WebElement loginButtonElement = driver.findElement(By.name("login"));
         loginButtonElement.click();
 
         WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
@@ -56,7 +56,7 @@ public class MyAccountTests {
         WebElement passwordInputElement = driver.findElement(By.id("password"));
         passwordInputElement.sendKeys("test");
 
-        WebElement loginButtonElement = driver.findElement(By.className("woocommerce-Button"));
+        WebElement loginButtonElement = driver.findElement(By.name("login"));
         loginButtonElement.click();
 
         WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
@@ -73,7 +73,7 @@ public class MyAccountTests {
         WebElement passwordInputElement = driver.findElement(By.id("password"));
         passwordInputElement.sendKeys("@Wizard.com!201");
 
-        WebElement loginButtonElement = driver.findElement(By.className("woocommerce-Button"));
+        WebElement loginButtonElement = driver.findElement(By.name("login"));
         loginButtonElement.click();
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -87,14 +87,14 @@ public class MyAccountTests {
     }
 
     @Test
-    public void testLogoutAfterSuccessfulLogin() {
+    public void testLogoutAfterSuccessfulLoginLogsOut() {
         WebElement usernameInputElement = driver.findElement(By.id("username"));
         usernameInputElement.sendKeys("hcfand+8178joafea1tc@auti.st");
 
         WebElement passwordInputElement = driver.findElement(By.id("password"));
         passwordInputElement.sendKeys("@Wizard.com!201");
 
-        WebElement loginButtonElement = driver.findElement(By.className("woocommerce-Button"));
+        WebElement loginButtonElement = driver.findElement(By.name("login"));
         loginButtonElement.click();
 
         driver.manage().timeouts().implicitlyWait(3, TimeUnit.SECONDS);
@@ -114,6 +114,45 @@ public class MyAccountTests {
         WebElement registerForm = loginAndRegisterFormElements.findElements(By.tagName("div")).get(1);
         Assert.assertEquals("Register", registerForm.findElement(By.tagName("h2")).getText());
         Assert.assertNotNull(registerForm.findElement(By.className("register")));
+    }
+
+    @Test
+    public void testRegisterFormWithEmptyFieldsReturnsErrorForEmail() {
+        WebElement registerButtonElement = driver.findElement(By.name("register"));
+        registerButtonElement.click();
+
+        WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
+        WebElement error = errorsListElement.findElements(By.tagName("li")).get(0);
+
+        Assert.assertEquals("Error: Please provide a valid email address.", error.getText());
+    }
+
+    @Test
+    public void testRegisterFormWithEmptyPasswordFieldReturnsErrorForPassword() {
+        WebElement emailNameInputElement = driver.findElement(By.id("reg_email"));
+        emailNameInputElement.sendKeys("a@a.a");
+
+        WebElement registerButtonElement = driver.findElement(By.name("register"));
+        registerButtonElement.click();
+
+        WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
+        WebElement error = errorsListElement.findElements(By.tagName("li")).get(0);
+
+        Assert.assertEquals("Error: Please enter an account password.", error.getText());
+    }
+
+    @Test
+    public void testRegisterFormExistingRegistrationReturnsGeneralError() {
+        WebElement emailInputElement = driver.findElement(By.id("reg_email"));
+        emailInputElement.sendKeys("test@test.com");
+
+        WebElement registerButtonElement = driver.findElement(By.name("register"));
+        registerButtonElement.click();
+
+        WebElement errorsListElement = driver.findElement(By.className("woocommerce-error"));
+        WebElement error = errorsListElement.findElements(By.tagName("li")).get(0);
+
+        Assert.assertEquals("Error: An account is already registered with your email address. Please login.", error.getText());
     }
 
     @After
