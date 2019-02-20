@@ -9,6 +9,9 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository class that defines methods to manipulate {@link Task} model objects
+ */
 public class TasksRepository {
     private UsersRepository usersRepo;
 
@@ -16,10 +19,17 @@ public class TasksRepository {
         this.usersRepo = new UsersRepository();
     }
 
+    /**
+     * @return collection of {@link Task}
+     */
     public List<Task> getAll() {
         return DataStore.getTasks();
     }
 
+    /**
+     * @param id id of task we are looking for
+     * @return {@link Task} with provided id or null if task does not exist
+     */
     public Task getById(UUID id) {
         return DataStore.getTasks()
                 .stream()
@@ -28,6 +38,10 @@ public class TasksRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param title title of task we are looking for
+     * @return {@link Task} with provided title or null if task does not exist
+     */
     public Task getByTitle(String title) {
         return DataStore.getTasks()
                 .stream()
@@ -36,12 +50,22 @@ public class TasksRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param task {@link Task} that will be created
+     * @throws NullPointerException when task is null
+     * @throws Exception            when task title or description is null
+     */
     public void add(Task task) throws Exception {
         this.verifyTaskData(task);
 
         DataStore.addTasks(task);
     }
 
+    /**
+     * @param task {@link Task} that will be updated
+     * @throws NullPointerException when task is null
+     * @throws Exception            when task title or description is null
+     */
     public void update(Task task) throws Exception {
         this.verifyTaskData(task);
 
@@ -58,6 +82,11 @@ public class TasksRepository {
         t.setSubTasks(task.getSubTasks());
     }
 
+    /**
+     * @param task {@link Task} that will be deleted
+     * @throws NullPointerException when task is null
+     * @throws Exception            when task title or description is null
+     */
     public void delete(Task task) throws Exception {
         this.verifyTaskData(task);
 
@@ -70,6 +99,10 @@ public class TasksRepository {
         DataStore.getTasks().remove(item);
     }
 
+    /**
+     * @param taskId id of task we are looking for
+     * @return collection of {@link Task} assigned to task with provided id
+     */
     public List<Task> getAllSubTasks(UUID taskId) {
         Task task = this.getById(taskId);
         if (task == null)
@@ -78,6 +111,12 @@ public class TasksRepository {
         return task.getSubTasks();
     }
 
+    /**
+     * @param taskId  id of task we are looking for
+     * @param subTask {@link Task} that will be added
+     * @throws NullPointerException when task is null
+     * @throws Exception            when task title or description is null
+     */
     public void addSubTask(UUID taskId, Task subTask) throws Exception {
         this.verifyTaskData(subTask);
 
@@ -96,6 +135,10 @@ public class TasksRepository {
         task.setSubTasks(subTasks);
     }
 
+    /**
+     * @param taskId       id of task we are looking for
+     * @param subTaskTitle title of sub-task that will be removed
+     */
     public void removeSubTask(UUID taskId, String subTaskTitle) {
         Task task = this.getById(taskId);
         if (task == null) {
@@ -122,6 +165,10 @@ public class TasksRepository {
         task.setSubTasks(subTasks);
     }
 
+    /**
+     * @param taskId id of task we are looking for
+     * @return {@link Status} of task with provided id or null if status is not defined
+     */
     public Status getTaskStatus(UUID taskId) {
         Task task = this.getById(taskId);
         if (task == null) {
@@ -135,6 +182,10 @@ public class TasksRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param taskId id of task we are looking for
+     * @return {@link User} of task with provided id or null if user is not defined
+     */
     public User getTaskAssignee(UUID taskId) {
         Task task = this.getById(taskId);
         if (task == null) {
@@ -148,6 +199,10 @@ public class TasksRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param task {@link Task} that will be verified
+     * @return false if task is null
+     */
     public boolean doesTaskExist(Task task) {
         if (task == null) {
             return false;
@@ -161,6 +216,7 @@ public class TasksRepository {
 
         return t != null;
     }
+
     private void verifyTaskData(Task task) throws Exception {
         if (task == null) {
             throw new NullPointerException("Task is not defined. You should pass a valid object instance.");

@@ -6,14 +6,24 @@ import models.User;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository class that defines methods to manipulate {@link User} model objects
+ */
 public class UsersRepository {
     public UsersRepository() {
     }
 
+    /**
+     * @return collection of {@link User}
+     */
     public List<User> getAll() {
         return DataStore.getUsers();
     }
 
+    /**
+     * @param id id of user we are looking for
+     * @return {@link User} with provided id or null if user does not exist
+     */
     public User getById(UUID id) {
         return DataStore.getUsers()
                 .stream()
@@ -22,6 +32,10 @@ public class UsersRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param name name of user we are looking for
+     * @return {@link User} with provided name or null if user does not exist
+     */
     public User getByName(String name) {
         return DataStore.getUsers()
                 .stream()
@@ -30,12 +44,22 @@ public class UsersRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param user {@link User} that will be created
+     * @throws NullPointerException when user is null
+     * @throws Exception            when user name or role is null
+     */
     public void add(User user) throws Exception {
         verifyUserData(user);
 
         DataStore.addUsers(user);
     }
 
+    /**
+     * @param user {@link User} that will be updated
+     * @throws NullPointerException when user is null
+     * @throws Exception            when user name or role is null
+     */
     public void update(User user) throws Exception {
         verifyUserData(user);
 
@@ -48,6 +72,11 @@ public class UsersRepository {
         u.setRole(user.getRole());
     }
 
+    /**
+     * @param user {@link User} that will be deleted
+     * @throws NullPointerException when user is null
+     * @throws Exception            when user name or role is null
+     */
     public void delete(User user) throws Exception {
         verifyUserData(user);
 
@@ -60,6 +89,10 @@ public class UsersRepository {
         DataStore.getUsers().remove(item);
     }
 
+    /**
+     * @param user {@link User} that will be verified
+     * @return false if user is null
+     */
     public boolean doesUserExist(User user) {
         if (user == null) {
             return false;

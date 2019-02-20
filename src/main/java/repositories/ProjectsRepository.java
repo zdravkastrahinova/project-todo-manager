@@ -7,14 +7,24 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
+/**
+ * Repository class that defines methods to manipulate {@link Project} model objects
+ */
 public class ProjectsRepository {
     public ProjectsRepository() {
     }
 
+    /**
+     * @return collection of {@link Project}
+     */
     public List<Project> getAll() {
         return DataStore.getProjects();
     }
 
+    /**
+     * @param id id of project we are looking for
+     * @return {@link Project} with provided id or null if project does not exist
+     */
     public Project getById(UUID id) {
         return DataStore.getProjects()
                 .stream()
@@ -23,6 +33,10 @@ public class ProjectsRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param title title of project we are looking for
+     * @return {@link Project} with provided title or null if project does not exist
+     */
     public Project getByTitle(String title) {
         return DataStore.getProjects()
                 .stream()
@@ -31,12 +45,22 @@ public class ProjectsRepository {
                 .orElse(null);
     }
 
+    /**
+     * @param project {@link Project} that will be created
+     * @throws NullPointerException when project is null
+     * @throws Exception            when project title or description is null
+     */
     public void add(Project project) throws Exception {
         this.verifyProjectData(project);
 
         DataStore.addProjects(project);
     }
 
+    /**
+     * @param project {@link Project} that will be updated
+     * @throws NullPointerException when project is null
+     * @throws Exception            when project title or description is null
+     */
     public void update(Project project) throws Exception {
         this.verifyProjectData(project);
 
@@ -52,6 +76,11 @@ public class ProjectsRepository {
         p.setSubProjects(project.getSubProjects());
     }
 
+    /**
+     * @param project {@link Project} that will be deleted
+     * @throws NullPointerException when project is null
+     * @throws Exception            when project title or description is null
+     */
     public void delete(Project project) throws Exception {
         this.verifyProjectData(project);
 
@@ -64,6 +93,10 @@ public class ProjectsRepository {
         DataStore.getProjects().remove(item);
     }
 
+    /**
+     * @param projectId id of project we are looking for
+     * @return collection of {@link Project} assigned to project with provided id
+     */
     public List<Project> getAllSubProjects(UUID projectId) {
         Project project = this.getById(projectId);
         if (project == null)
@@ -72,6 +105,12 @@ public class ProjectsRepository {
         return project.getSubProjects();
     }
 
+    /**
+     * @param projectId  id of project we are looking for
+     * @param subProject {@link Project} that will be created
+     * @throws NullPointerException when project is null
+     * @throws Exception            when project title or description is null
+     */
     public void addSubProject(UUID projectId, Project subProject) throws Exception {
         this.verifyProjectData(subProject);
 
@@ -90,6 +129,10 @@ public class ProjectsRepository {
         project.setSubProjects(subProjects);
     }
 
+    /**
+     * @param projectId       id of project we are looking for
+     * @param subProjectTitle title of sub-project that will be removed
+     */
     public void removeSubProject(UUID projectId, String subProjectTitle) {
         Project project = this.getById(projectId);
         if (project == null) {
@@ -116,6 +159,10 @@ public class ProjectsRepository {
         project.setSubProjects(subProjects);
     }
 
+    /**
+     * @param project {@link Project} that will be verified
+     * @return false if project is null
+     */
     public boolean doesProjectExist(Project project) {
         if (project == null) {
             return false;
