@@ -2,18 +2,28 @@ package models;
 
 import java.util.UUID;
 
+/**
+ * BaseModel class generating UUID
+ */
 public class BaseModel {
     private UUID id;
 
-    public BaseModel() {
+    /**
+     * Default constructor
+     * Automatically generates UUID
+     */
+    BaseModel() {
         this.setId(UUID.randomUUID());
     }
 
+    /**
+     * @return id of the model
+     */
     public UUID getId() {
         return id;
     }
 
-    public void setId(UUID id) {
+    private void setId(UUID id) {
         this.id = id;
     }
 }
