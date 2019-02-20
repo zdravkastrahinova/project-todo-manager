@@ -6,6 +6,9 @@ import repositories.UsersRepository;
 
 import java.util.Scanner;
 
+/**
+ * MainMenu renderer
+ */
 public class MenuRenderer {
     private UsersRepository usersRepo;
     private ProjectsRepository projectsRepo;
@@ -17,6 +20,9 @@ public class MenuRenderer {
         tasksRepo = new TasksRepository();
     }
 
+    /**
+     * Allows user to select sub-menu
+     */
     public void renderMainMenu() {
         System.out.println();
         System.out.println("Choose operation");

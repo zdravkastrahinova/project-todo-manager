@@ -6,14 +6,23 @@ import repositories.UsersRepository;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * UserMenu renderer
+ */
 class UsersRenderer {
     private static Scanner sc;
     private UsersRepository usersRepo;
 
+    /**
+     * @param usersRepo {@link UsersRepository} provided for operating with users
+     */
     UsersRenderer(UsersRepository usersRepo) {
         this.usersRepo = usersRepo;
     }
 
+    /**
+     * Allow user to select option to start operating with users
+     */
     void renderUsersMenu() {
         System.out.println();
         System.out.println("Choose user operation");

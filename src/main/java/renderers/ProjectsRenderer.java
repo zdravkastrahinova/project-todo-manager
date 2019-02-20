@@ -6,14 +6,23 @@ import repositories.ProjectsRepository;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * ProjectMenu renderer
+ */
 class ProjectsRenderer {
     private static Scanner sc;
     private ProjectsRepository projectsRepo;
 
+    /**
+     * @param projectsRepo {@link ProjectsRepository} provided for operating with projects
+     */
     ProjectsRenderer(ProjectsRepository projectsRepo) {
         this.projectsRepo = projectsRepo;
     }
 
+    /**
+     * Allows user to select option to start operating with projects
+     */
     void renderProjectsMenu() {
         System.out.println();
         System.out.println("Choose project operation");

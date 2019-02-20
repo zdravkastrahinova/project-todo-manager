@@ -10,16 +10,26 @@ import repositories.UsersRepository;
 import java.util.List;
 import java.util.Scanner;
 
+/**
+ * TaskMenu renderer
+ */
 class TasksRenderer {
     private static Scanner sc;
     private UsersRepository usersRepo;
     private TasksRepository tasksRepo;
 
+    /**
+     * @param usersRepo {@link UsersRepository} provided for operating with users
+     * @param tasksRepo {@link TasksRepository} provided for operating with tasks
+     */
     TasksRenderer(UsersRepository usersRepo, TasksRepository tasksRepo) {
         this.usersRepo = usersRepo;
         this.tasksRepo = tasksRepo;
     }
 
+    /**
+     * Allows user to select option to start operating with tasks
+     */
     void renderTasksMenu() {
         System.out.println();
         System.out.println("Choose task operation");
