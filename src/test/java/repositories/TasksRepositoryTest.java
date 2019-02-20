@@ -207,4 +207,120 @@ public class TasksRepositoryTest {
 
         Assert.assertFalse("Task does not exist because title is does not belong to any task", this.tasksRepo.doesTaskExist(taskMock));
     }
+
+    @Test
+    public void getAllSubTasksWithExistingTaskIdReturnsSubTasks() {
+        List<Task> subTasks = this.tasksRepo.getAllSubTasks(DataStore.getTasks().get(2).getId());
+
+        Assert.assertNotNull("Sub-task list with existing parent task UUID is not null", subTasks);
+        Assert.assertEquals("Sub-task list count with existing parent task UUID is 1", 1, subTasks.size());
+    }
+
+    @Test
+    public void getAllSubTasksWithNonExistingTaskIdReturnsNull() {
+        Assert.assertNull("Sub-tasks list is null when parent task UUID belongs to non-existing task", this.tasksRepo.getAllSubTasks(UUID.randomUUID()));
+    }
+
+    @Test
+    public void addSubTaskWithExistingTaskIdIdAndValidDataAddsSubTask() {
+        Task task = DataStore.getTasks().get(2);
+        Assert.assertEquals("Initially, task has defined 1 sub-task", 1, task.getSubTasks().size());
+
+        Task subTaskMock = Mockito.mock(Task.class);
+        when(subTaskMock.getTitle()).thenReturn("Sub-task title");
+        when(subTaskMock.getDescription()).thenReturn("Sub-task description");
+        when(subTaskMock.getStatusId()).thenReturn(DataStore.getStatuses().get(0).getId());
+        when(subTaskMock.getAssigneeId()).thenReturn(DataStore.getUsers().get(0).getId());
+
+        try {
+            this.tasksRepo.addSubTask(task.getId(), subTaskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertEquals("Finally, task has defined 2 sub-tasks", 2, task.getSubTasks().size());
+    }
+
+    @Test
+    public void addSubTaskWithNonExistingTaskIdAndValidDataReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        Task subTaskMock = Mockito.mock(Task.class);
+        when(subTaskMock.getTitle()).thenReturn("Sub-task title");
+        when(subTaskMock.getDescription()).thenReturn("Sub-task description");
+
+        try {
+            this.tasksRepo.addSubTask(id, subTaskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertNull("Task is null because UUID does not belong to existing task", this.tasksRepo.getById(id));
+    }
+
+    @Test
+    public void addSubTaskWithExistingTaskIdAndSubTasksAreNullInitializesSubTasks() {
+        Task task = DataStore.getTasks().get(2);
+        task.setSubTasks(null);
+
+        Assert.assertNull("Initially, sub-tasks list is null", task.getSubTasks());
+
+        Task subTaskMock = Mockito.mock(Task.class);
+        when(subTaskMock.getTitle()).thenReturn("Sub-task title");
+        when(subTaskMock.getDescription()).thenReturn("Sub-task description");
+
+        try {
+            this.tasksRepo.addSubTask(task.getId(), subTaskMock);
+        } catch (Exception ex) {
+            ex.printStackTrace();
+        }
+
+        Assert.assertNotNull("Finally, sub-tasks list is not null", task.getSubTasks());
+    }
+
+    @Test
+    public void removeSubTaskWithNonExistingTaskIdAndExistingSubTaskTitleReturnsWithoutAnyChanges() {
+        UUID id = UUID.randomUUID();
+
+        this.tasksRepo.removeSubTask(id, "Sub-task title");
+
+        Assert.assertNull("Method returns because task is null", this.tasksRepo.getById(id));
+    }
+
+    @Test
+    public void removeSubTaskWithExistingTaskIdAndSubTasksAreNullReturnsWithoutAnyChanges() {
+        Task task = DataStore.getTasks().get(2);
+        task.setSubTasks(null);
+
+        Assert.assertNull("Initially, sub-tasks list is null", task.getSubTasks());
+
+        this.tasksRepo.removeSubTask(task.getId(), "Sub-task title");
+
+        Assert.assertNull("Finally, sub-tasks list is null", task.getSubTasks());
+    }
+
+    @Test
+    public void removeSubTaskWithExistingTaskIdAndNonExistingTitleReturnsWithoutChanges() {
+        Task task = DataStore.getTasks().get(2);
+        Assert.assertNotNull("Initially, task has defined sub-tasks", task.getSubTasks());
+        Assert.assertEquals("Initially, task has list with 1 sub-task", 1, task.getSubTasks().size());
+
+        this.tasksRepo.removeSubTask(task.getId(), "Non-existing title");
+
+        Assert.assertNotNull("Finally, task has defined sub-tasks", task.getSubTasks());
+        Assert.assertEquals("Finally, task has list with 1 sub-task", 1, task.getSubTasks().size());
+    }
+
+    @Test
+    public void removeSubTaskWithExistingTaskIdAndExistingTitleRemovesSubTask() {
+        Task task = DataStore.getTasks().get(2);
+        Assert.assertNotNull("Initially, task has defined sub-tasks", task.getSubTasks());
+        Assert.assertEquals("Initially, task has list with 1 sub-tasks", 1, task.getSubTasks().size());
+
+        String subTaskTitle = "Java DAL and Service layers";
+        this.tasksRepo.removeSubTask(task.getId(), subTaskTitle);
+
+        Assert.assertEquals("Finally, task has list with 0 sub-tasks", 0, task.getSubTasks().size());
+        Assert.assertNull("Finally, existing title returns null after sub-task has been removed", this.tasksRepo.getByTitle(subTaskTitle));
+    }
 }

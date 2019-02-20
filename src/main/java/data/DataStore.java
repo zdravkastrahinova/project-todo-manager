@@ -96,10 +96,12 @@ public final class DataStore {
 
         Task subTask = new Task("Java DAL and Service layers", "Getting familiar with Java layers architecture");
         configureTask(subTask);
+        ArrayList<Task> subTasks = new ArrayList<>();
+        subTasks.add(subTask);
 
         Task architectureTask = new Task("Java Architecture", "Getting familiar with Java architecture");
         configureTask(architectureTask);
-        architectureTask.setSubTasks(Arrays.asList(subTask));
+        architectureTask.setSubTasks(subTasks);
 
         tasks.add(architectureTask);
 

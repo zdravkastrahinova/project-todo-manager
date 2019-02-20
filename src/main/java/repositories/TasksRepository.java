@@ -82,6 +82,9 @@ public class TasksRepository {
         this.verifyTaskData(subTask);
 
         Task task = this.getById(taskId);
+        if (task == null) {
+            return;
+        }
 
         List<Task> subTasks = task.getSubTasks();
         if (subTasks == null) {
@@ -95,6 +98,9 @@ public class TasksRepository {
 
     public void removeSubTask(UUID taskId, String subTaskTitle) {
         Task task = this.getById(taskId);
+        if (task == null) {
+            return;
+        }
 
         List<Task> subTasks = task.getSubTasks();
         if (subTasks == null) {
@@ -103,7 +109,7 @@ public class TasksRepository {
 
         Task subTask = subTasks
                 .stream()
-                .filter(sp -> sp.getTitle().equals(subTaskTitle.trim().toLowerCase()))
+                .filter(sp -> sp.getTitle().toLowerCase().equals(subTaskTitle.trim().toLowerCase()))
                 .findFirst()
                 .orElse(null);
 
