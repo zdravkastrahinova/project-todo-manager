@@ -19,49 +19,49 @@ public final class DataStore {
     private static ArrayList<Status> statuses = null;
 
     /**
-     * @return list of users
+     * @return collection of {@link User}
      */
     public static List<User> getUsers() {
         return DataStore.users;
     }
 
     /**
-     * @param user to add user to collection
+     * @param user {@link User} that will be added to collection
      */
     public static void addUsers(User user) {
         DataStore.users.add(user);
     }
 
     /**
-     * @return list of projects
+     * @return collection of {@link Project}
      */
     public static List<Project> getProjects() {
         return DataStore.projects;
     }
 
     /**
-     * @param project to add project to collection
+     * @param project {@link Project} that will be added to collection
      */
     public static void addProjects(Project project) {
         DataStore.projects.add(project);
     }
 
     /**
-     * @return list of tasks
+     * @return collection of {@link Task}
      */
     public static List<Task> getTasks() {
         return DataStore.tasks;
     }
 
     /**
-     * @param task to add task to collection
+     * @param task {@link Task} that will be added to collection
      */
     public static void addTasks(Task task) {
         DataStore.tasks.add(task);
     }
 
     /**
-     * @return list of statuses
+     * @return collection of {@link Status}
      */
     public static List<Status> getStatuses() {
         return DataStore.statuses;
