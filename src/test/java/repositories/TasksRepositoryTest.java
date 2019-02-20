@@ -323,4 +323,24 @@ public class TasksRepositoryTest {
         Assert.assertEquals("Finally, task has list with 0 sub-tasks", 0, task.getSubTasks().size());
         Assert.assertNull("Finally, existing title returns null after sub-task has been removed", this.tasksRepo.getByTitle(subTaskTitle));
     }
+
+    @Test
+    public void getTaskStatusWithExistingTaskIdReturnsStatus() {
+        Assert.assertNotNull("Task status should be defined", this.tasksRepo.getTaskStatus(DataStore.getTasks().get(0).getId()));
+    }
+
+    @Test
+    public void getTaskStatusWithNonExistingTaskIdReturnsWithNullStatus() {
+        Assert.assertNull("Method returns with null status because task is null", this.tasksRepo.getTaskStatus(UUID.randomUUID()));
+    }
+
+    @Test
+    public void getTaskAssigneeWithExistingTaskIdReturnsAssignee() {
+        Assert.assertNotNull("Task assignee should be defined", this.tasksRepo.getTaskAssignee(DataStore.getTasks().get(0).getId()));
+    }
+
+    @Test
+    public void getTaskAssigneeWithNonExistingTaskIdReturnsNullAssignee() {
+        Assert.assertNull("Method returns with null assignee because task is null", this.tasksRepo.getTaskAssignee(UUID.randomUUID()));
+    }
 }
