@@ -1,7 +1,7 @@
-package renderers;
+package todo.renderers;
 
-import models.Project;
-import repositories.ProjectsRepository;
+import todo.models.Project;
+import todo.repositories.ProjectsRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -86,7 +86,7 @@ class ProjectsRenderer {
 
     private void renderProjectAddingMenu() {
         try {
-            System.out.println("Enter project data");
+            System.out.println("Enter project todo.data");
             System.out.println("Title:");
             String title = sc.nextLine();
 

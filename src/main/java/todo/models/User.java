@@ -1,4 +1,4 @@
-package models;
+package todo.models;
 
 /**
  * Extends BaseModel to get UUID

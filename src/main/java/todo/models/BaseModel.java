@@ -1,4 +1,4 @@
-package models;
+package todo.models;
 
 import java.util.UUID;
 

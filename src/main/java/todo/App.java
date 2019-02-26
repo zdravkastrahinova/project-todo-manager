@@ -1,5 +1,7 @@
-import data.DataStore;
-import renderers.MenuRenderer;
+package todo;
+
+import todo.data.DataStore;
+import todo.renderers.MenuRenderer;
 
 public class App {
     public static void main(String[] args) {

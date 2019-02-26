@@ -1,9 +1,9 @@
-package data;
+package todo.data;
 
-import models.Project;
-import models.Status;
-import models.Task;
-import models.User;
+import todo.models.Project;
+import todo.models.Status;
+import todo.models.Task;
+import todo.models.User;
 
 import java.util.ArrayList;
 import java.util.Arrays;

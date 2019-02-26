@@ -1,11 +1,11 @@
-package renderers;
+package todo.renderers;
 
-import data.DataStore;
-import models.Status;
-import models.Task;
-import models.User;
-import repositories.TasksRepository;
-import repositories.UsersRepository;
+import todo.data.DataStore;
+import todo.models.Status;
+import todo.models.Task;
+import todo.models.User;
+import todo.repositories.TasksRepository;
+import todo.repositories.UsersRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -95,7 +95,7 @@ class TasksRenderer {
 
     private void renderTaskAddingMenu() {
         try {
-            System.out.println("Enter title data");
+            System.out.println("Enter title todo.data");
             System.out.println("Title:");
             String title = sc.nextLine();
 

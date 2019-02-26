@@ -1,7 +1,7 @@
-package renderers;
+package todo.renderers;
 
-import models.User;
-import repositories.UsersRepository;
+import todo.models.User;
+import todo.repositories.UsersRepository;
 
 import java.util.List;
 import java.util.Scanner;
@@ -71,7 +71,7 @@ class UsersRenderer {
 
     private void renderUserAddingMenu() {
         try {
-            System.out.println("Enter user data");
+            System.out.println("Enter user todo.data");
             System.out.println("Name:");
             String name = sc.nextLine();
 

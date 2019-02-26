@@ -1,4 +1,4 @@
-package data;
+package todo.data;
 
 import org.junit.Assert;
 import org.junit.Test;

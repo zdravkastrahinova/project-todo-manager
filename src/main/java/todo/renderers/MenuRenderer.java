@@ -1,8 +1,8 @@
-package renderers;
+package todo.renderers;
 
-import repositories.ProjectsRepository;
-import repositories.TasksRepository;
-import repositories.UsersRepository;
+import todo.repositories.ProjectsRepository;
+import todo.repositories.TasksRepository;
+import todo.repositories.UsersRepository;
 
 import java.util.Scanner;
 

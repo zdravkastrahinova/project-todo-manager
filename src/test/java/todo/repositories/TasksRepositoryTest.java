@@ -1,7 +1,7 @@
-package repositories;
+package todo.repositories;
 
-import data.DataStore;
-import models.Task;
+import todo.data.DataStore;
+import todo.models.Task;
 import org.junit.After;
 import org.junit.Assert;
 import org.junit.Before;
