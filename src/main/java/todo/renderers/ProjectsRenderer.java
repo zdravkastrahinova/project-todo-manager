@@ -23,7 +23,7 @@ class ProjectsRenderer {
     /**
      * Allows user to select option to start operating with projects
      */
-    void renderProjectsMenu() {
+    public void renderProjectsMenu() {
         System.out.println();
         System.out.println("Choose project operation");
         System.out.println("[1] List");
@@ -75,7 +75,7 @@ class ProjectsRenderer {
         }
     }
 
-    private void renderProjectListingMenu() {
+    public void renderProjectListingMenu() {
         List<Project> projects = projectsRepo.getAll();
 
         for (Project p : projects) {
@@ -86,7 +86,7 @@ class ProjectsRenderer {
 
     private void renderProjectAddingMenu() {
         try {
-            System.out.println("Enter project todo.data");
+            System.out.println("Enter project data");
             System.out.println("Title:");
             String title = sc.nextLine();
 

@@ -30,7 +30,7 @@ class TasksRenderer {
     /**
      * Allows user to select option to start operating with tasks
      */
-    void renderTasksMenu() {
+    public void renderTasksMenu() {
         System.out.println();
         System.out.println("Choose task operation");
         System.out.println("[1] List");
@@ -82,7 +82,7 @@ class TasksRenderer {
         }
     }
 
-    private void renderTaskListingMenu() {
+    public void renderTaskListingMenu() {
         List<Task> tasks = tasksRepo.getAll();
 
         for (Task t : tasks) {
@@ -95,7 +95,7 @@ class TasksRenderer {
 
     private void renderTaskAddingMenu() {
         try {
-            System.out.println("Enter title todo.data");
+            System.out.println("Enter task data");
             System.out.println("Title:");
             String title = sc.nextLine();
 
@@ -227,7 +227,7 @@ class TasksRenderer {
         }
     }
 
-    public void renderSubTaskDeletingMenu() {
+    private void renderSubTaskDeletingMenu() {
         System.out.println("Enter task title you want to remove sub-task");
         String taskTitle = sc.nextLine();
 
