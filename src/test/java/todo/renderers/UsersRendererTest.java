@@ -31,7 +31,7 @@ public class UsersRendererTest {
     }
 
     @Test
-    public void renderUserListingMenuRendersList() {
+    public void renderUserListingMenuRendersUsers() {
         List<User> users = new ArrayList<>();
         users.add(new User("Amy Adams", "Developer"));
         when(usersRepoMock.getAll()).thenReturn(users);
