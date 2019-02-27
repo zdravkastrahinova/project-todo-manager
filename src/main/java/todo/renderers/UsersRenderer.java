@@ -23,7 +23,7 @@ class UsersRenderer {
     /**
      * Allow user to select option to start operating with users
      */
-    public void renderUsersMenu() {
+    void renderUsersMenu() {
         System.out.println();
         System.out.println("Choose user operation");
         System.out.println("[1] List");
@@ -61,7 +61,7 @@ class UsersRenderer {
         }
     }
 
-    public void renderUserListingMenu() {
+    void renderUserListingMenu() {
         List<User> users = usersRepo.getAll();
 
         for (User u : users) {

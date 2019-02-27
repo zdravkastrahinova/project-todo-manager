@@ -23,7 +23,7 @@ class ProjectsRenderer {
     /**
      * Allows user to select option to start operating with projects
      */
-    public void renderProjectsMenu() {
+    void renderProjectsMenu() {
         System.out.println();
         System.out.println("Choose project operation");
         System.out.println("[1] List");
@@ -75,7 +75,7 @@ class ProjectsRenderer {
         }
     }
 
-    public void renderProjectListingMenu() {
+    void renderProjectListingMenu() {
         List<Project> projects = projectsRepo.getAll();
 
         for (Project p : projects) {

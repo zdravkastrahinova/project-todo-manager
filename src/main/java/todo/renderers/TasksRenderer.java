@@ -30,7 +30,7 @@ class TasksRenderer {
     /**
      * Allows user to select option to start operating with tasks
      */
-    public void renderTasksMenu() {
+    void renderTasksMenu() {
         System.out.println();
         System.out.println("Choose task operation");
         System.out.println("[1] List");
@@ -82,7 +82,7 @@ class TasksRenderer {
         }
     }
 
-    public void renderTaskListingMenu() {
+    void renderTaskListingMenu() {
         List<Task> tasks = tasksRepo.getAll();
 
         for (Task t : tasks) {
