@@ -20,11 +20,7 @@
             </plugin>
         </plugins>
     </build>
-    <modules>
-        <module>first-child-projects</module>
-        <module>second-child-project</module>
-        <module>third-child-project</module>
-    </modules>
+
     <dependencies>
         <dependency>
             <groupId>junit</groupId>
@@ -45,5 +41,10 @@
         </dependency>
     </dependencies>
 
+    <modules>
+        <module>second-child-project</module>
+        <module>third-child-project</module>
+        <module>first-child-projects</module>
+    </modules>
 
 </project>
