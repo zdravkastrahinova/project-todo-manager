@@ -23,6 +23,7 @@
     <modules>
         <module>first-child-projects</module>
         <module>second-child-project</module>
+        <module>third-child-project</module>
     </modules>
     <dependencies>
         <dependency>
